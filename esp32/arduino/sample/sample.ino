@@ -36,7 +36,7 @@ volatile int btnAction = 0;
 
 class serverCallbacks: public BLEServerCallbacks {
   void onConnect(BLEServer* pServer) {
-   deviceConnected = true;
+    deviceConnected = true;
   };
 
   void onDisconnect(BLEServer* pServer) {
