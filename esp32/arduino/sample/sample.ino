@@ -11,6 +11,7 @@
 // User service characteristics
 #define WRITE_CHARACTERISTIC_UUID "E9062E71-9E62-4BC6-B0D3-35CDCD9B027B"
 #define NOTIFY_CHARACTERISTIC_UUID "62FBD229-6EDD-4D1A-B554-5C4E1BB29169"
+#define READ_CHARACTERISTIC_UUID "0ad11ab5-b490-4ccf-8419-978df81e7909"
 
 // PSDI Service UUID: Fixed value for Developer Trial
 #define PSDI_SERVICE_UUID "E625601E-9E55-4597-A598-76018A0D293D"
@@ -35,7 +36,7 @@ volatile int btnAction = 0;
 
 class serverCallbacks: public BLEServerCallbacks {
   void onConnect(BLEServer* pServer) {
-    deviceConnected = true;
+   deviceConnected = true;
   };
 
   void onDisconnect(BLEServer* pServer) {
@@ -74,6 +75,8 @@ void setup() {
   Serial.println("Ready to Connect");
 }
 
+int btnCount = 0;
+
 void loop() {
   uint8_t btnValue;
 
@@ -83,6 +86,12 @@ void loop() {
     notifyCharacteristic->setValue(&btnValue, 1);
     notifyCharacteristic->notify();
     delay(20);
+    # ここから
+    if (btnValue) {
+      btnCount++;
+      readCharacteristic->setValue(btnCount);
+    }
+    # ここまで
   }
   // Disconnection
   if (!deviceConnected && oldDeviceConnected) {
@@ -108,16 +117,16 @@ void setupServices(void) {
   writeCharacteristic->setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
   writeCharacteristic->setCallbacks(new writeCallback());
 
+  readCharacteristic = userService->createCharacteristic(READ_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_READ);
+  readCharacteristic->setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED);
+  readCharacteristic->setValue(0); // とりあえず 0 で初期化
+
   notifyCharacteristic = userService->createCharacteristic(NOTIFY_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_NOTIFY);
   notifyCharacteristic->setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
   BLE2902* ble9202 = new BLE2902();
   ble9202->setNotifications(true);
   ble9202->setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
   notifyCharacteristic->addDescriptor(ble9202);
-
-  readCharacteristic = userService->createCharacteristic(READ_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_READ);
-  readCharacteristic->setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED);
-  readCharacteristic->setValue(0); //とりあえず０で初期化
 
   // Setup PSDI Service
   psdiService = thingsServer->createService(PSDI_SERVICE_UUID);
