@@ -86,12 +86,10 @@ void loop() {
     notifyCharacteristic->setValue(&btnValue, 1);
     notifyCharacteristic->notify();
     delay(20);
-    # ここから
     if (btnValue) {
       btnCount++;
       readCharacteristic->setValue(btnCount);
     }
-    # ここまで
   }
   // Disconnection
   if (!deviceConnected && oldDeviceConnected) {
