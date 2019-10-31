@@ -11,7 +11,6 @@
 // User service characteristics
 #define WRITE_CHARACTERISTIC_UUID "E9062E71-9E62-4BC6-B0D3-35CDCD9B027B"
 #define NOTIFY_CHARACTERISTIC_UUID "62FBD229-6EDD-4D1A-B554-5C4E1BB29169"
-#define READ_CHARACTERISTIC_UUID "1F4B505A-32EC-479B-AD25-1AC43FA9EBEE"
 
 // PSDI Service UUID: Fixed value for Developer Trial
 #define PSDI_SERVICE_UUID "E625601E-9E55-4597-A598-76018A0D293D"
@@ -27,7 +26,6 @@ BLEService* psdiService;
 BLECharacteristic* psdiCharacteristic;
 BLECharacteristic* writeCharacteristic;
 BLECharacteristic* notifyCharacteristic;
-BLECharacteristic* readCharacteristic;
 
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
@@ -120,10 +118,6 @@ void setupServices(void) {
   ble9202->setNotifications(true);
   ble9202->setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
   notifyCharacteristic->addDescriptor(ble9202);
-
-  readCharacteristic = userService->createCharacteristic(READ_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_READ);
-  readCharacteristic->setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED);
-  readCharacteristic->setValue(0); //初期化 0
 
   // Setup PSDI Service
   psdiService = thingsServer->createService(PSDI_SERVICE_UUID);
