@@ -1,6 +1,5 @@
 // User service UUID: Change this to your generated service UUID
 const USER_SERVICE_UUID         = '15da2812-4003-41bf-917a-b56c548b78e4'; // LED, Button
-const READ_SERVICE_UUID         = '0ad11ab5-b490-4ccf-8419-978df81e7909'; // 総カウント用
 
 // User service characteristics
 const LED_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
@@ -210,16 +209,6 @@ function liffConnectToDevice(device) {
 }
 
 function liffGetUserService(service) {
-    // Read value
-    service.getCharacteristic(READ_CHARACTERISTIC_UUID).then(characteristic => {
-        return characteristic.readValue();
-    }).then(value => {
-        // Convert byte buffer to Int32 in little endian
-        const value = new DataView(value.buffer).getInt32(0, ture);
-        document.getElementById("total-count").innerText = value;
-    }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
-    });
     
     // Button pressed state
     service.getCharacteristic(BTN_CHARACTERISTIC_UUID).then(characteristic => {
