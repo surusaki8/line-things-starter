@@ -1,6 +1,7 @@
 // User service UUID: Change this to your generated service UUID
 const USER_SERVICE_UUID         = '15da2812-4003-41bf-917a-b56c548b78e4'; // LED, Button
 const READ_SERVICE_UUID         = '0ad11ab5-b490-4ccf-8419-978df81e7909'; // 総カウント用
+
 // User service characteristics
 const LED_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
 const BTN_CHARACTERISTIC_UUID   = '62FBD229-6EDD-4D1A-B554-5C4E1BB29169';
