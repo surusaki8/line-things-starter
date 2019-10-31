@@ -122,7 +122,7 @@ void setupServices(void) {
   notifyCharacteristic->addDescriptor(ble9202);
 
   readCharacteristic = userService->createCharacteristic(READ_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_READ);
-  readCharacteristic->setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED | ESP_GATT_PERM_WRITE_ENCRYPTED);
+  readCharacteristic->setAccessPermissions(ESP_GATT_PERM_READ_ENCRYPTED);
   readCharacteristic->setValue(0); //初期化 0
 
   // Setup PSDI Service
