@@ -75,9 +75,8 @@ void setup() {
   Serial.println("Ready to Connect");
 }
 
-int btnCount = 0;
-
 void loop() {
+  int btnCount = 0;
   uint8_t btnValue;
 
   while (btnAction > 0 && deviceConnected) {
@@ -85,11 +84,11 @@ void loop() {
     btnAction = 0;
     notifyCharacteristic->setValue(&btnValue, 1);
     notifyCharacteristic->notify();
-    delay(20);
     if (btnValue) {
       btnCount++;
       readCharacteristic->setValue(btnCount);
     }
+    delay(20);
   }
   // Disconnection
   if (!deviceConnected && oldDeviceConnected) {
