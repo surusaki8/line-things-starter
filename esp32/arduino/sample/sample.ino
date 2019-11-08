@@ -75,10 +75,9 @@ void setup() {
   Serial.println("Ready to Connect");
 }
 
-int btnCount = 0;
-
 void loop() {
   uint8_t btnValue;
+  int btnCount = 0;
 
   while (btnAction > 0 && deviceConnected) {
     btnValue = !digitalRead(BUTTON);
